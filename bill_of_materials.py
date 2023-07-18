@@ -1,7 +1,8 @@
-import xlrd
 import xlwt
 import re
 import os
+
+from excel_reader import xls_reader
 
 font = xlwt.Font()
 font.name = 'Times New Roman'
@@ -10,8 +11,7 @@ font.bold = True
 style = xlwt.XFStyle()
 style.font = font
 
-types = {'BQ': 'Кварцы',
-         'C': 'Конденсаторы',
+types = {'C': 'Конденсаторы',
          'D': 'Микросхемы',
          'DA': 'Микросхемы аналоговые',
          'DD': 'Микросхемы цифровые',
@@ -20,6 +20,7 @@ types = {'BQ': 'Кварцы',
          'HL': 'Устройства индикации',
          'K': 'Реле',
          'L': 'Дроссели, Катушки индуктивности',
+         'Q': 'Кварцы',
          'R': 'Резисторы',
          'SB': 'Переключатели',
          'T': 'Резисторы',
@@ -30,25 +31,6 @@ types = {'BQ': 'Кварцы',
          'XP': 'Соединители',
          'XS': 'Соединители',
          }
-
-
-def xls_reader(path, raws, columns):
-    workbook = xlrd.open_workbook(path, on_demand=True, formatting_info=True)
-    worksheet = workbook.sheet_by_index(0)
-    res_list = []
-    for i in range(1, raws):  # количество считываемых строк таблицы
-        tmp_list = []
-        tmp_dict = {}
-        for j in range(0, columns):  # количество считываемых столбцов таблицы
-            value = worksheet.cell_value(i, j)
-            tmp_list.append(value)
-        tmp_dict["Designator"] = tmp_list[0]
-        tmp_dict["Part Number"] = tmp_list[1]
-        tmp_dict["Value"] = tmp_list[2]
-        tmp_dict["Quantity"] = int(tmp_list[3])
-        tmp_dict["Comment"] = tmp_list[4]
-        res_list.append(tmp_dict)
-    return res_list
 
 
 def to_modify_list(array):
@@ -99,12 +81,15 @@ def write_in_excel(array, path):
             cur_designator = 'D'
         elif cur_designator == 'XP' or cur_designator == 'XS':
             cur_designator = 'X'
+        elif cur_designator == 'BQ' or cur_designator == 'ZQ':
+            cur_designator = 'Q'
         if cur_designator != prev_designator:
             row += 1
-            if cur_designator in types.keys():
-                write_lst = f'{types[cur_designator]}'
-            else:
-                write_lst = 'Компонент'
+            write_lst = f'{types.get(cur_designator, "Компонент")}'
+            # if cur_designator in types.keys():
+            #     write_lst = f'{types.get(cur_designator, "Компонент")}'
+            # else:
+            #     write_lst = 'Компонент'
             ws.write(row, 1, write_lst)
             prev_designator = cur_designator
             row += 1
@@ -130,12 +115,10 @@ def write_in_excel(array, path):
 
 def main():
     from_file_path = os.path.abspath("D:\Проекты\RV-21.31.701-2_ver.3\Project Outputs for РВ-21.31.701-2\BOM"
-                                     "\Copy of Bill of Materials-РВ-21.31.701-2.xls")
+                                     "\Bill_of_Materials_no_group_by_pn-РВ-21.31.701-2.xls")
     to_file_path = os.path.abspath("D:\Проекты\RV-21.31.701-2_ver.3\Project Outputs for РВ-21.31.701-2\BOM"
                                    "\РВ-21.31.701-2-ПЭ3.xls")
-    rows = 837
-    columns = 5
-    bom_list = xls_reader(from_file_path, rows, columns)
+    bom_list = xls_reader(from_file_path)
     modified_bom_list = to_modify_list(bom_list)
     write_in_excel(modified_bom_list, to_file_path)
 

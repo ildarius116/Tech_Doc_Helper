@@ -1,7 +1,8 @@
-import xlrd
 import xlwt
 import re
 import os
+
+from excel_reader import xls_reader
 
 font = xlwt.Font()
 font.name = 'Times New Roman'
@@ -10,8 +11,7 @@ font.bold = True
 style = xlwt.XFStyle()
 style.font = font
 
-types = {'BQ': ('Кварц', 'Кварцы'),
-         'C': ('Конденсатор', 'Конденсаторы'),
+types = {'C': ('Конденсатор', 'Конденсаторы'),
          'D': ('Микросхема', 'Микросхемы'),
          'DA': ('Микросхема аналоговая', 'Микросхемы аналоговые'),
          'DD': ('Микросхема цифровая', 'Микросхемы цифровые'),
@@ -20,6 +20,7 @@ types = {'BQ': ('Кварц', 'Кварцы'),
          'HL': ('Устройство индикации', 'Устройства индикации'),
          'K': ('Реле', 'Реле'),
          'L': ('Дроссель', 'Дроссели'),
+         'Q': ('Кварц', 'Кварцы'),
          'R': ('Резистор', 'Резисторы'),
          'SB': ('Переключатель', 'Переключатели'),
          'T': ('Трансформатор', 'Трансформаторы'),
@@ -30,25 +31,6 @@ types = {'BQ': ('Кварц', 'Кварцы'),
          'XP': ('Соединитель', 'Соединители'),
          'XS': ('Соединитель', 'Соединители'),
          }
-
-
-def xls_reader(path, raws, columns):
-    workbook = xlrd.open_workbook(path, on_demand=True, formatting_info=True)
-    worksheet = workbook.sheet_by_index(0)
-    res_list = []
-    for i in range(1, raws):  # количество считываемых строк таблицы
-        tmp_list = []
-        tmp_dict = {}
-        for j in range(0, columns):  # количество считываемых столбцов таблицы
-            value = worksheet.cell_value(i, j)
-            tmp_list.append(value)
-        tmp_dict["Designator"] = tmp_list[0]
-        tmp_dict["Part Number"] = tmp_list[1]
-        tmp_dict["Value"] = tmp_list[2]
-        tmp_dict["Quantity"] = int(tmp_list[3])
-        tmp_dict["Manufacturer"] = tmp_list[4]
-        res_list.append(tmp_dict)
-    return res_list
 
 
 def convert_list_to_dict(array):
@@ -196,13 +178,15 @@ def write_in_excel(dictionary, pos, path):
                         cur_designator_sym = 'D'
                     elif cur_designator_sym == 'XP' or cur_designator_sym == 'XS':
                         cur_designator_sym = 'X'
+                    elif cur_designator_sym == 'BQ' or cur_designator_sym == 'ZQ':
+                        cur_designator_sym = 'Q'
                     if cur_manufacturer != prev_manufacturer:
                         if cur_designator_sym in types.keys():
                             write_lst = [types[cur_designator_sym][1], cur_manufacturer]
                         else:
                             write_lst = ["Прочее", cur_manufacturer]
                         for col, label in enumerate(write_lst):
-                            ws.write(row, col+1, label)
+                            ws.write(row, col + 1, label)
                         prev_manufacturer = cur_manufacturer
                         row += 1
                     designators_list = elem['Designator']
@@ -218,14 +202,12 @@ def write_in_excel(dictionary, pos, path):
 
 
 def main():
-    from_file_path = os.path.abspath("D:\Проекты\RV-21.31.701-2_ver.3\Project Outputs for РВ-21.31.701-2\BOM"
-                                     "\Bill of Materials-РВ-21.31.701-2.xls")
-    to_file_path = os.path.abspath("D:\Проекты\RV-21.31.701-2_ver.3\Project Outputs for РВ-21.31.701-2\BOM"
+    from_file_path = os.path.abspath("D:\Проекты\PB-21_tool\PB-21_tool_main\Project Outputs for PB-21_tool_main\BOM"
+                                     "\Bill of Materials-PB-21_tool_main.xls")
+    to_file_path = os.path.abspath("D:\Проекты\PB-21_tool\PB-21_tool_main\Project Outputs for PB-21_tool_main\BOM"
                                    "\РВ-21.31.701-2 - Перечень на закупку.xls")
-    rows = 133
-    columns = 5
     start_position = 1
-    bom_list = xls_reader(from_file_path, rows, columns)
+    bom_list = xls_reader(from_file_path)
     type_dict = convert_list_to_dict(bom_list)
     write_in_excel(type_dict, start_position, to_file_path)
 
