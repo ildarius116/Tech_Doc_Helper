@@ -10,7 +10,13 @@ style = xlwt.XFStyle()
 style.font = font
 
 
-def xls_reader(path, doc_type=None):
+def xls_reader(path: str, doc_type: str = None) -> list:
+    """
+    Function read Excel file and return List of this file contents.
+    :param path: path of incoming Excel file
+    :param doc_type: pattern of file processing
+    :return: list of file contents
+    """
     workbook = xlrd.open_workbook(path, on_demand=True, formatting_info=True)
     worksheet = workbook.sheet_by_index(0)
     rows_numbers = worksheet.nrows
@@ -45,17 +51,8 @@ def xls_reader(path, doc_type=None):
     return res_list
 
 
-
 def main():
-    bom_file_path = os.path.abspath("D:\Проекты\PB-21_tool\PB-21_tool_main\Project Outputs for PB-21_tool_main\BOM"
-                                    "\BOM_found_1.xls")
-    storage_file_path = os.path.abspath("D:\Проекты\PB-21_tool\PB-21_tool_main\Project Outputs for PB-21_tool_main\BOM"
-                                        "\ЭНЕРГО_02 мая.2023.xls")
-    to_file_path = os.path.abspath("D:\Проекты\PB-21_tool\PB-21_tool_main\Project Outputs for PB-21_tool_main\BOM"
-                                   "\BOM_found_2.xls")
-    bom_list = xls_reader(bom_file_path, 'BOM')
-    storage_list = xls_reader(storage_file_path, 'STORE')[1:]
-    write_in_excel(bom_list, storage_list, to_file_path)
+    pass
 
 
 if __name__ == '__main__':

@@ -33,7 +33,12 @@ types = {'C': 'Конденсаторы',
          }
 
 
-def to_modify_list(array):
+def to_modify_list(array: list) -> list:
+    """
+    Function grouping elements by "Designator" (first) and "Part Number" (second)
+    :param array: source list
+    :return: modified list
+    """
     modified_bom_list = []
     tmp_elem = array[0]
     start_designator = tmp_elem['Designator']
@@ -69,7 +74,13 @@ def to_modify_list(array):
     return modified_bom_list
 
 
-def write_in_excel(array, path):
+def write_in_excel(array: list, path: str) -> None:
+    """
+    Function writes modified list in Excel file
+    :param array: incomming list
+    :param path: exiting file path
+    :return: None
+    """
     wb = xlwt.Workbook()
     ws = wb.add_sheet('Bill of Materials', cell_overwrite_ok=True)
 
@@ -86,10 +97,6 @@ def write_in_excel(array, path):
         if cur_designator != prev_designator:
             row += 1
             write_lst = f'{types.get(cur_designator, "Компонент")}'
-            # if cur_designator in types.keys():
-            #     write_lst = f'{types.get(cur_designator, "Компонент")}'
-            # else:
-            #     write_lst = 'Компонент'
             ws.write(row, 1, write_lst)
             prev_designator = cur_designator
             row += 1
@@ -113,9 +120,13 @@ def write_in_excel(array, path):
     wb.save(path)
 
 
-def make_bom_gost(from_file, to_file):
-    print("from_file:", from_file)
-    print("to_file:", to_file)
+def make_bom_gost(from_file: str, to_file: str) -> None:
+    """
+    Function performs a sequence of actions.
+    :param from_file: incoming file path
+    :param to_file: exiting file path
+    :return: None
+    """
     bom_list = xls_reader(from_file)
     modified_bom_list = to_modify_list(bom_list)
     write_in_excel(modified_bom_list, to_file)
