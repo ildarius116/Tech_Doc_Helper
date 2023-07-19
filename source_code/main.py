@@ -436,14 +436,9 @@ class Ui_MainWindow(QMainWindow, QFileDialog):
                 error.setText('Не верно введено название файла')
                 error.setIcon(QMessageBox.Icon.Warning)
                 error.setStandardButtons(QMessageBox.StandardButton.Ok)
-                # error.setInformativeText("Don't push EQUAL twice!")
                 error.setDetailedText(f'В названии файла не должно быть символов: "{pattern}"')
-                # error.buttonClicked.connect(lambda: self.event_btn_save_clicked(page))
-                # error.buttonClicked.connect(self.popup_action)
                 btn_res = ''
-
                 error.exec()
-
         if btn_res:
             file_name += '.xls'
             self.save_path = self.path_dir + '/' + file_name
