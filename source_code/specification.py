@@ -184,7 +184,6 @@ def write_in_excel(dictionary: dict, pos: int, path: str) -> None:
     :param path: exiting file path
     :return: None
     """
-
     wb = xlwt.Workbook()
     ws = wb.add_sheet('Спецификация', cell_overwrite_ok=True)
 

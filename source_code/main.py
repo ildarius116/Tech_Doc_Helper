@@ -1,5 +1,4 @@
 import os
-import sys
 from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtWidgets import QFileDialog, QMainWindow, QInputDialog, QMessageBox
 from bill_of_materials import make_bom_gost
@@ -454,8 +453,6 @@ class Ui_MainWindow(QMainWindow, QFileDialog):
             self.saved_file_name_store.setText(file_name)
 
     def event_btn_result_clicked(self, page):
-        print("upload_path:", self.upload_path)
-        print("save_path:", self.save_path)
         try:
             if page == 'bom':
                 make_bom_gost(self.upload_path, self.save_path)

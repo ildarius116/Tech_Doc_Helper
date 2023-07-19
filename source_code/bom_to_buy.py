@@ -33,7 +33,12 @@ types = {'C': ('Конденсатор', 'Конденсаторы'),
          }
 
 
-def convert_list_to_dict(array):
+def convert_list_to_dict(array: list) -> dict:
+    """
+    Function convert source list to dictionary.
+    :param array: source list
+    :return modified_dict: exiting dictionary
+    """
     type_dict = {}
     for bom_item in array:
         bom_designator = bom_item['Designator'].split(', ')[0]
@@ -107,7 +112,12 @@ def convert_list_to_dict(array):
     return modified_dict
 
 
-def compact_dict(dct):
+def compact_dict(dct: dict) -> None:
+    """
+    Function compress source dictionary by "Designator"
+    :param dct: source dictionary
+    :return: None
+    """
     tmp_lst = []
     for value in dct.values():
         for elem in value:
@@ -135,7 +145,12 @@ def compact_dict(dct):
                     tmp_lst = []
 
 
-def modify_dict(dct):
+def modify_dict(dct: dict) -> dict:
+    """
+    Function grouping source dictionary by "Manufacturer"
+    :param dct: source dictionary
+    :return modified_dict: exiting dictionary
+    """
     modified_dict = {}
     for key, item_parts in dct.items():
         for item in item_parts:
@@ -150,16 +165,25 @@ def modify_dict(dct):
     return modified_dict
 
 
-def sort_dict(dct):
+def sort_dict(dct: dict) -> None:
+    """
+    Function sort dictionary by "Manufacturer" (first) and "Part Number" (second)
+    :param dct: source dictionary
+    :return: None
+    """
     for key, item in dct.items():
-        # print(item)
         item = sorted(item, key=lambda x: (x['Manufacturer'], x['Part Number']))
         dct[key] = item
-        # print(item)
-        pass
 
 
-def write_in_excel(dictionary, pos, path):
+def write_in_excel(dictionary: dict, pos: int, path: str) -> None:
+    """
+    Function writes modified list in Excel file
+    :param dictionary: incomming dictionary
+    :param pos: start position in list if needed
+    :param path: exiting file path
+    :return: None
+    """
     wb = xlwt.Workbook()
     ws = wb.add_sheet('Спецификация', cell_overwrite_ok=True)
 
@@ -201,7 +225,13 @@ def write_in_excel(dictionary, pos, path):
     wb.save(path)
 
 
-def buy_bom(from_file, to_file):
+def buy_bom(from_file: str, to_file: str) -> None:
+    """
+    Function performs a sequence of actions.
+    :param from_file: incoming file path
+    :param to_file: exiting file path
+    :return: None
+    """
     start_position = 1
     bom_list = xls_reader(from_file)
     type_dict = convert_list_to_dict(bom_list)

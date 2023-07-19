@@ -11,7 +11,17 @@ style = xlwt.XFStyle()
 style.font = font
 
 
-def write_in_excel(bom, storage, to_path):
+def write_in_excel(bom: str, storage: str, to_path: str) -> None:
+    """
+    Function writes to exiting file:
+     1. "Not Found" (in 1st sheet) - elements which wasn't found
+     2. "Found" (in 2nd sheet) -  elements which was found
+     3. "STORAGE" (in 3rd sheet) -  remaining list items in storage
+    :param bom: Bill_of_Materials file path
+    :param storage: Storage file path
+    :param to_path: Exiting file path
+    :return: None
+    """
     wb = xlwt.Workbook()
     ws1 = wb.add_sheet('Not Found', cell_overwrite_ok=True)
     ws2 = wb.add_sheet('Found', cell_overwrite_ok=True)
@@ -67,7 +77,14 @@ def write_in_excel(bom, storage, to_path):
     wb.save(to_path)
 
 
-def find_in_storage(bom_file, storage_file, to_file):
+def find_in_storage(bom_file: str, storage_file: str, to_file: str) -> None:
+    """
+    Function performs a sequence of actions.
+    :param bom_file: incoming Bill_of_Materials file path
+    :param storage_file: incoming Storage file path
+    :param to_file: exiting file path
+    :return: None
+    """
     bom_list = xls_reader(bom_file, 'BOM')
     storage_list = xls_reader(storage_file, 'STORE')[1:]
     write_in_excel(bom_list, storage_list, to_file)
