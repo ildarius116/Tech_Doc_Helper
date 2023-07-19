@@ -113,15 +113,17 @@ def write_in_excel(array, path):
     wb.save(path)
 
 
-def main():
+def make_bom_gost(from_file, to_file):
+    print("from_file:", from_file)
+    print("to_file:", to_file)
+    bom_list = xls_reader(from_file)
+    modified_bom_list = to_modify_list(bom_list)
+    write_in_excel(modified_bom_list, to_file)
+
+
+if __name__ == '__main__':
     from_file_path = os.path.abspath("D:\Проекты\RV-21.31.701-2_ver.3\Project Outputs for РВ-21.31.701-2\BOM"
                                      "\Bill_of_Materials_no_group_by_pn-РВ-21.31.701-2.xls")
     to_file_path = os.path.abspath("D:\Проекты\RV-21.31.701-2_ver.3\Project Outputs for РВ-21.31.701-2\BOM"
                                    "\РВ-21.31.701-2-ПЭ3.xls")
-    bom_list = xls_reader(from_file_path)
-    modified_bom_list = to_modify_list(bom_list)
-    write_in_excel(modified_bom_list, to_file_path)
-
-
-if __name__ == '__main__':
-    main()
+    make_bom_gost(from_file_path, to_file_path)

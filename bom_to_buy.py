@@ -201,16 +201,16 @@ def write_in_excel(dictionary, pos, path):
     wb.save(path)
 
 
-def main():
+def buy_bom(from_file, to_file):
+    start_position = 1
+    bom_list = xls_reader(from_file)
+    type_dict = convert_list_to_dict(bom_list)
+    write_in_excel(type_dict, start_position, to_file)
+
+
+if __name__ == '__main__':
     from_file_path = os.path.abspath("D:\Проекты\PB-21_tool\PB-21_tool_main\Project Outputs for PB-21_tool_main\BOM"
                                      "\Bill of Materials-PB-21_tool_main.xls")
     to_file_path = os.path.abspath("D:\Проекты\PB-21_tool\PB-21_tool_main\Project Outputs for PB-21_tool_main\BOM"
                                    "\РВ-21.31.701-2 - Перечень на закупку.xls")
-    start_position = 1
-    bom_list = xls_reader(from_file_path)
-    type_dict = convert_list_to_dict(bom_list)
-    write_in_excel(type_dict, start_position, to_file_path)
-
-
-if __name__ == '__main__':
-    main()
+    buy_bom(from_file_path, to_file_path)

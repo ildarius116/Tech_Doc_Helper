@@ -67,17 +67,17 @@ def write_in_excel(bom, storage, to_path):
     wb.save(to_path)
 
 
-def main():
+def find_in_storage(bom_file, storage_file, to_file):
+    bom_list = xls_reader(bom_file, 'BOM')
+    storage_list = xls_reader(storage_file, 'STORE')[1:]
+    write_in_excel(bom_list, storage_list, to_file)
+
+
+if __name__ == '__main__':
     bom_file_path = os.path.abspath("D:\Проекты\PB-21_tool\PB-21_tool_main\Project Outputs for PB-21_tool_main\BOM"
                                     "\Bill of Materials-PB-21_tool_main.xls")
     storage_file_path = os.path.abspath("D:\Проекты\PB-21_tool\PB-21_tool_main\Project Outputs for PB-21_tool_main\BOM"
                                         "\Высотомер_13 июля.2023.xls")
     to_file_path = os.path.abspath("D:\Проекты\PB-21_tool\PB-21_tool_main\Project Outputs for PB-21_tool_main\BOM"
                                    "\BOM_found_0.xls")
-    bom_list = xls_reader(bom_file_path, 'BOM')
-    storage_list = xls_reader(storage_file_path, 'STORE')[1:]
-    write_in_excel(bom_list, storage_list, to_file_path)
-
-
-if __name__ == '__main__':
-    main()
+    find_in_storage(bom_file_path, storage_file_path, to_file_path)

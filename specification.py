@@ -209,16 +209,16 @@ def write_in_excel(dictionary, pos, path):
     wb.save(path)
 
 
-def main():
+def make_spec_gost(from_file, to_file):
+    start_position = 2
+    bom_list = xls_reader(from_file)
+    type_dict = convert_list_to_dict(bom_list)
+    write_in_excel(type_dict, start_position, to_file)
+
+
+if __name__ == '__main__':
     from_file_path = os.path.abspath("D:\Проекты\RV-21.31.701-2_ver.3\Project Outputs for РВ-21.31.701-2\BOM"
                                      "\Bill of Materials-РВ-21.31.701-2.xls")
     to_file_path = os.path.abspath("D:\Проекты\RV-21.31.701-2_ver.3\Project Outputs for РВ-21.31.701-2\BOM"
                                    "\РВ-21.31.701-2 - Спецификация.xls")
-    start_position = 2
-    bom_list = xls_reader(from_file_path)
-    type_dict = convert_list_to_dict(bom_list)
-    write_in_excel(type_dict, start_position, to_file_path)
-
-
-if __name__ == '__main__':
-    main()
+    make_spec_gost(from_file_path, to_file_path)
