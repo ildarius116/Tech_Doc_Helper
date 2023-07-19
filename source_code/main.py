@@ -217,7 +217,7 @@ class Ui_MainWindow(QMainWindow, QFileDialog):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "TechDocHelper"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Технический помощник"))
         self.btn_upload_bom.setText(_translate("MainWindow", "Загрузить"))
         self.opened_file_name_bom.setText(
             _translate("MainWindow", "Нажмите кнопку \"Загрузить\" и выберите файл для загрузки"))
