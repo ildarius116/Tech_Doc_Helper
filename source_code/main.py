@@ -1,10 +1,20 @@
 import os
+import sys
 from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtWidgets import QFileDialog, QMainWindow, QInputDialog, QMessageBox
 from bill_of_materials import make_bom_gost
 from specification import make_spec_gost
 from bom_to_buy import buy_bom
 from stock_manager import find_in_storage
+
+
+def resource_path(relative_path):
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    base_path = getattr(
+        sys,
+        '_MEIPASS',
+        os.path.dirname(os.path.abspath(__file__)))
+    return os.path.join(base_path, relative_path)
 
 
 class Ui_MainWindow(QMainWindow, QFileDialog):
@@ -41,7 +51,7 @@ class Ui_MainWindow(QMainWindow, QFileDialog):
         self.label_excel_bom = QtWidgets.QLabel(parent=self.bom)
         self.label_excel_bom.setGeometry(QtCore.QRect(0, 150, 800, 150))
         self.label_excel_bom.setText("")
-        self.label_excel_bom.setPixmap(QtGui.QPixmap("screen_01.JPG"))
+        self.label_excel_bom.setPixmap(QtGui.QPixmap(resource_path("img/screen_01.JPG")))
         self.label_excel_bom.setScaledContents(True)
         self.label_excel_bom.setObjectName("label_excel_bom")
         self.text_browser_bom = QtWidgets.QTextBrowser(parent=self.bom)
@@ -51,7 +61,7 @@ class Ui_MainWindow(QMainWindow, QFileDialog):
         self.label_igf_bom = QtWidgets.QLabel(parent=self.bom)
         self.label_igf_bom.setGeometry(QtCore.QRect(530, 0, 260, 130))
         self.label_igf_bom.setText("")
-        self.label_igf_bom.setPixmap(QtGui.QPixmap("igf_grey.jpg"))
+        self.label_igf_bom.setPixmap(QtGui.QPixmap(resource_path("img/igf_grey.jpg")))
         self.label_igf_bom.setScaledContents(True)
         self.label_igf_bom.setObjectName("label_igf_bom")
         self.text_browser_bom.raise_()
@@ -78,7 +88,7 @@ class Ui_MainWindow(QMainWindow, QFileDialog):
         self.label_excel_spec = QtWidgets.QLabel(parent=self.spec)
         self.label_excel_spec.setGeometry(QtCore.QRect(0, 150, 800, 150))
         self.label_excel_spec.setText("")
-        self.label_excel_spec.setPixmap(QtGui.QPixmap("screen_02.JPG"))
+        self.label_excel_spec.setPixmap(QtGui.QPixmap(resource_path("img/screen_02.JPG")))
         self.label_excel_spec.setScaledContents(True)
         self.label_excel_spec.setObjectName("label_excel_spec")
         self.btn_save_spec = QtWidgets.QPushButton(parent=self.spec)
@@ -91,7 +101,7 @@ class Ui_MainWindow(QMainWindow, QFileDialog):
         self.label_igf_spec = QtWidgets.QLabel(parent=self.spec)
         self.label_igf_spec.setGeometry(QtCore.QRect(530, 0, 260, 130))
         self.label_igf_spec.setText("")
-        self.label_igf_spec.setPixmap(QtGui.QPixmap("igf_grey.jpg"))
+        self.label_igf_spec.setPixmap(QtGui.QPixmap(resource_path("img/igf_grey.jpg")))
         self.label_igf_spec.setScaledContents(True)
         self.label_igf_spec.setObjectName("label_igf_spec")
         self.text_browser_spec = QtWidgets.QTextBrowser(parent=self.spec)
@@ -129,13 +139,13 @@ class Ui_MainWindow(QMainWindow, QFileDialog):
         self.label_excel_buy = QtWidgets.QLabel(parent=self.buy)
         self.label_excel_buy.setGeometry(QtCore.QRect(0, 150, 800, 150))
         self.label_excel_buy.setText("")
-        self.label_excel_buy.setPixmap(QtGui.QPixmap("screen_02.JPG"))
+        self.label_excel_buy.setPixmap(QtGui.QPixmap(resource_path("img/screen_02.JPG")))
         self.label_excel_buy.setScaledContents(True)
         self.label_excel_buy.setObjectName("label_excel_buy")
         self.label_igf_buy = QtWidgets.QLabel(parent=self.buy)
         self.label_igf_buy.setGeometry(QtCore.QRect(530, 0, 260, 130))
         self.label_igf_buy.setText("")
-        self.label_igf_buy.setPixmap(QtGui.QPixmap("igf_grey.jpg"))
+        self.label_igf_buy.setPixmap(QtGui.QPixmap(resource_path("img/igf_grey.jpg")))
         self.label_igf_buy.setScaledContents(True)
         self.label_igf_buy.setObjectName("label_igf_buy")
         self.opened_file_name_buy = QtWidgets.QLabel(parent=self.buy)
@@ -173,13 +183,13 @@ class Ui_MainWindow(QMainWindow, QFileDialog):
         self.label_excel_store = QtWidgets.QLabel(parent=self.store)
         self.label_excel_store.setGeometry(QtCore.QRect(0, 150, 800, 150))
         self.label_excel_store.setText("")
-        self.label_excel_store.setPixmap(QtGui.QPixmap("screen_02.JPG"))
+        self.label_excel_store.setPixmap(QtGui.QPixmap(resource_path("img/screen_02.JPG")))
         self.label_excel_store.setScaledContents(True)
         self.label_excel_store.setObjectName("label_excel_store")
         self.label_igf_store = QtWidgets.QLabel(parent=self.store)
         self.label_igf_store.setGeometry(QtCore.QRect(530, 0, 260, 130))
         self.label_igf_store.setText("")
-        self.label_igf_store.setPixmap(QtGui.QPixmap("igf_grey.jpg"))
+        self.label_igf_store.setPixmap(QtGui.QPixmap(resource_path("img/igf_grey.jpg")))
         self.label_igf_store.setScaledContents(True)
         self.label_igf_store.setObjectName("label_igf_store")
         self.opened_file_name_bom_store = QtWidgets.QLabel(parent=self.store)
