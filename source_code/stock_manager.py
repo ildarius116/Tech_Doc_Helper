@@ -30,12 +30,38 @@ def write_in_excel(bom: str, storage: str, to_path: str) -> None:
     found_list = []
     raw = 0
     for bom_item in bom.copy():
+        prev_part = ''
+        prev_code = ''
         for store_item in storage.copy():
             if raw != 0:
                 if bom_item["Part Number"] and bom_item["Part Number"] in store_item['Номенклатура']:
-                    write_lst = [bom_item['Part Number'], bom_item['Value'], bom_item['Quantity'], store_item['Код'],
-                                 store_item['Номенклатура'], store_item['Количество'], store_item['Адрес хранения'],
-                                 store_item['Склад']]
+                    if bom_item["Part Number"] != prev_part:
+                        write_lst = [bom_item['Part Number'].upper(),
+                                     bom_item['Value'],
+                                     bom_item['Quantity'],
+                                     store_item['Код'],
+                                     store_item['Номенклатура'],
+                                     store_item['Количество'],
+                                     store_item['Адрес хранения'],
+                                     store_item['Склад']
+                                     ]
+                        prev_part = bom_item["Part Number"]
+                    else:
+                        if store_item['Код'] != prev_code:
+                            write_lst = ['', '', '',
+                                         store_item['Код'],
+                                         store_item['Номенклатура'],
+                                         store_item['Количество'],
+                                         store_item['Адрес хранения'],
+                                         store_item['Склад']
+                                         ]
+                        else:
+                            write_lst = ['', '', '', '',
+                                         store_item['Номенклатура'],
+                                         store_item['Количество'],
+                                         store_item['Адрес хранения'],
+                                         store_item['Склад']
+                                         ]
                     for col, label in enumerate(write_lst):
                         ws2.write(raw, col, label)
                     raw += 1
@@ -53,7 +79,7 @@ def write_in_excel(bom: str, storage: str, to_path: str) -> None:
     raw = 0
     for bom_item in bom.copy():
         if raw != 0:
-            write_lst = [bom_item['Designator'], bom_item['Part Number'], bom_item['Value'], bom_item['Quantity'],
+            write_lst = [bom_item['Designator'], bom_item['Part Number'].upper(), bom_item['Value'], bom_item['Quantity'],
                          bom_item['Manufacturer']]
         else:
             write_lst = ['Designator', 'Part Number', 'Value', 'Quantity', 'Manufacturer']
