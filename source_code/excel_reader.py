@@ -34,13 +34,14 @@ def xls_reader(path: str, doc_type: str = None) -> list:
             tmp_dict["Value"] = tmp_list[2]
             tmp_dict["Quantity"] = int(tmp_list[3])
             tmp_dict["Manufacturer"] = tmp_list[4]
-            tmp_dict["Comment"] = tmp_list[4]
+            tmp_dict["Comment"] = tmp_list[5]
         if doc_type == "BOM":
             tmp_dict["Designator"] = str(tmp_list[0])
             tmp_dict["Part Number"] = str(tmp_list[1]).lower().split(" ")[0]
             tmp_dict["Value"] = tmp_list[2]
             tmp_dict["Quantity"] = int(tmp_list[3])
             tmp_dict["Manufacturer"] = tmp_list[4]
+            tmp_dict["Comment"] = tmp_list[5]
         elif doc_type == "STORE":
             tmp_dict["Код"] = str(tmp_list[0])
             tmp_dict["Номенклатура"] = str(tmp_list[1]).lower()
