@@ -102,16 +102,22 @@ def write_in_excel(array: list, path: str) -> None:
             row += 1
         if item['Comment'] == 'NP':
             comment = '*'
+        elif item['Comment'] == 'Const':
+            comment = 'Конструктивный элемент'
         else:
             comment = ' '
-        if not item['Part Number']:
-            comment = '**'
-        write_lst = [item['Designator'], f"{item['Part Number']}, {item['Manufacturer']}", item['Quantity'], comment]
+        # if not item['Part Number']:
+        #     comment = '**'
+        if item.get('Part Number', None):
+            write_lst = [item['Designator'], f"{item['Part Number']}, {item['Manufacturer']}", item['Quantity'], comment]
+        else:
+            write_lst = [item['Designator'], ' ', item['Quantity'], comment]
+
         for col, label in enumerate(write_lst):
             ws.write(row, col, label)
         row += 1
     row += 1
-    note_list = [['*', 'Не устанавливать'], ['**', 'Конструктивный элемент']]
+    note_list = [['*', 'Не устанавливать'], ['**', ' ']]
     for note in note_list:
         for col, label in enumerate(note):
             ws.write(row, col, label)

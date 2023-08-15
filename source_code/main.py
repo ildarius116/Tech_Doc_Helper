@@ -220,8 +220,17 @@ class Ui_MainWindow(QMainWindow, QFileDialog):
         self.tabWidget.setCurrentIndex(3)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
-        self.path_dir = '/home'
-        self.upload_path = ''
+        def get_history() -> str:
+            if os.path.isfile('history.txt'):
+                with open('history.txt', 'r') as file:
+                    history = file.readline()
+                    self.path_dir = history
+            else:
+                self.path_dir = '/home'
+                return self.path_dir
+
+        self.path_dir = get_history()
+        self.upload_path = get_history()
         self.save_path = ''
 
     def retranslateUi(self, MainWindow):
@@ -413,6 +422,7 @@ class Ui_MainWindow(QMainWindow, QFileDialog):
 
     def event_btn_upload_clicked(self, page):
         fname = QFileDialog.getOpenFileName(self, 'Выберите файл для загрузки', self.path_dir, 'Excel Files (*.xls)')
+        print(fname)
         self.upload_path, *_ = fname
         self.path_dir, path_file = os.path.split(self.upload_path)
         if not self.path_dir:
@@ -480,6 +490,9 @@ class Ui_MainWindow(QMainWindow, QFileDialog):
             error.setStandardButtons(QMessageBox.StandardButton.Ok)
             error.setDetailedText(f'{e.args}')
             error.exec()
+        finally:
+            with open('history.txt', 'w') as file:
+                file.write(self.path_dir)
 
 
 if __name__ == "__main__":

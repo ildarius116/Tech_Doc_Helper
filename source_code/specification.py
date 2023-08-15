@@ -193,7 +193,7 @@ def write_in_excel(dictionary: dict, pos: int, path: str) -> None:
     row = 1
     for key_i, value_i in dictionary.items():
         for key_j, value_J in value_i.items():
-            if key_j != '-':
+            if key_j and key_j != '-':
                 for elem in value_J:
                     cur_manufacturer = key_j
                     cur_designator = elem['Designator'][0]
