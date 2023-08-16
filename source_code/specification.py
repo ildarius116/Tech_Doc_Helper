@@ -195,40 +195,41 @@ def write_in_excel(dictionary: dict, pos: int, path: str) -> None:
         for key_j, value_J in value_i.items():
             if key_j and key_j != '-':
                 for elem in value_J:
-                    cur_manufacturer = key_j
-                    cur_designator = elem['Designator'][0]
-                    cur_designator_sym = re.findall('\D+', cur_designator)[0]
-                    if cur_designator_sym == 'DA' or cur_designator_sym == 'DD':
-                        cur_designator_sym = 'D'
-                    elif cur_designator_sym == 'XP' or cur_designator_sym == 'XS':
-                        cur_designator_sym = 'X'
-                    elif cur_designator_sym == 'BQ' or cur_designator_sym == 'ZQ':
-                        cur_designator_sym = 'Q'
-                    if cur_manufacturer != prev_manufacturer:
-                        row += 1
-                        if cur_designator_sym in types.keys():
-                            if len(value_J) > 1:
-                                write_lst = f"{types[cur_designator_sym][1]} {cur_manufacturer}"
+                    if elem['Part Number']:
+                        cur_manufacturer = key_j
+                        cur_designator = elem['Designator'][0]
+                        cur_designator_sym = re.findall('\D+', cur_designator)[0]
+                        if cur_designator_sym == 'DA' or cur_designator_sym == 'DD':
+                            cur_designator_sym = 'D'
+                        elif cur_designator_sym == 'XP' or cur_designator_sym == 'XS':
+                            cur_designator_sym = 'X'
+                        elif cur_designator_sym == 'BQ' or cur_designator_sym == 'ZQ':
+                            cur_designator_sym = 'Q'
+                        if cur_manufacturer != prev_manufacturer:
+                            row += 1
+                            if cur_designator_sym in types.keys():
+                                if len(value_J) > 1:
+                                    write_lst = f"{types[cur_designator_sym][1]} {cur_manufacturer}"
+                                else:
+                                    write_lst = f"{types[cur_designator_sym][0]} {elem['Part Number']}"
                             else:
-                                write_lst = f"{types[cur_designator_sym][0]} {elem['Part Number']}"
-                        else:
-                            write_lst = f"Прочее"
-                        ws.write(row, 2, write_lst)
-                        prev_manufacturer = cur_manufacturer
-                        row += 1
-                    designators_list = elem['Designator']
-                    for i, designator in enumerate(designators_list):
-                        if i == 0:
-                            if len(value_J) > 1:
-                                write_lst = [pos, '', elem['Part Number'], elem['Quantity'], designator]
+                                write_lst = f"Прочее"
+                            ws.write(row, 2, write_lst)
+                            prev_manufacturer = cur_manufacturer
+                            row += 1
+                        designators_list = elem['Designator']
+                        for i, designator in enumerate(designators_list):
+                            if i == 0:
+                                if len(value_J) > 1:
+                                    write_lst = [pos, '', elem['Part Number'], elem['Quantity'], designator]
+                                else:
+                                    write_lst = [pos, '', cur_manufacturer, elem['Quantity'], designator]
+                                pos += 1
                             else:
-                                write_lst = [pos, '', cur_manufacturer, elem['Quantity'], designator]
-                            pos += 1
-                        else:
-                            write_lst = ['', '', '', '', designator]
-                        for col, label in enumerate(write_lst):
-                            ws.write(row, col, label)
-                        row += 1
+                                write_lst = ['', '', '', '', designator]
+                            for col, label in enumerate(write_lst):
+                                ws.write(row, col, label)
+                            row += 1
 
     wb.save(path)
 

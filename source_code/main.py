@@ -422,7 +422,6 @@ class Ui_MainWindow(QMainWindow, QFileDialog):
 
     def event_btn_upload_clicked(self, page):
         fname = QFileDialog.getOpenFileName(self, 'Выберите файл для загрузки', self.path_dir, 'Excel Files (*.xls)')
-        print(fname)
         self.upload_path, *_ = fname
         self.path_dir, path_file = os.path.split(self.upload_path)
         if not self.path_dir:
